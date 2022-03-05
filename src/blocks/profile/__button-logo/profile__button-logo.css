@@ -1,0 +1,11 @@
+.profile__button-logo {
+	width: 10px;
+}
+
+@media screen and (max-width: 768px) {
+	.profile__button-logo {
+		padding-bottom: 1px;
+		width: 8px;
+		height: 8px;
+	}
+}

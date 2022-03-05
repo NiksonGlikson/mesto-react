@@ -1,0 +1,5 @@
+.profile__description {
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
+}

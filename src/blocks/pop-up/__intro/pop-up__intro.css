@@ -1,0 +1,6 @@
+.pop-up__intro {
+	max-width: 75vw;
+    margin: auto;
+    position: relative;
+    z-index: 5;
+}
