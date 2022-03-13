@@ -58,6 +58,15 @@ class Api {
 	  .then(this._getResponse)
 	}
 
+	changeLikeCardStatus(id, isLiked) {
+		if(isLiked) {
+			return this.handleLike(id);
+		}
+		else {
+			return this.removeLikeCard(id);
+		}
+	}
+
 	handleDelete(id) {
 		return fetch(`${this._urlAdress}/cards/${id}`, {
 		  method: 'DELETE',
