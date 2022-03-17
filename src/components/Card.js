@@ -18,7 +18,7 @@ const currentUser = React.useContext(CurrentUserContext);
 
 const isOwn = props.card.owner._id === currentUser._id;
 const cardDeleteButtonClassName = (
-  	`${isOwn ? 'element__trash' : 'element__trash_show'}`
+  	`${isOwn ? 'element__trash element__trash_show' : 'element__trash'}`
 );
 
 const isLiked = props.card.likes.some(i => i._id === currentUser._id);

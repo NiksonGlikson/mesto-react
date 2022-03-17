@@ -65,13 +65,12 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
 						card={card}
 						onCardClick={onCardClick}
 						onCardLike={handleCardLike}
+						onCardDelete={handleCardDelete}
 					/>
 				))}
 			</section>
 		</main>
 	);
-	
-
 }
 
 export default Main;

@@ -5,6 +5,8 @@ import Main from '../components/Main.js';
 import Footer from '../components/Footer.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import ImagePopup from '../components/ImagePopup.js';
+import EditProfilePopup from '../components/EditProfilePopup.js';
+import EditAvatarPopup from '../components/EditAvatarPopup.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import api from '../utils/Api.js';
 
@@ -46,73 +48,99 @@ function App() {
 		})
 		.catch(err => `Данные пользователя не получены : ${err}`)
 	}, []);
-	
 
+	function handleUpdateUser(currentUser) {
+		api.editUserInfo({ name: currentUser.name, about: currentUser.about })
+		.then((res) => {
+			setCurrentUser(res);
+			closeAllPopups();
+		})
+		.catch((err) => {
+			console.log(`${err}`);
+		})
+	}
+
+	function handleUpdateAvatar(avatar) {
+		api.editUserAvatar(avatar)
+		.then((res) => {
+			setCurrentUser(res);
+			closeAllPopups();
+		})
+		.catch((err) => {
+			console.log(`${err}`);
+		})
+	}
 
   return (
 	  <CurrentUserContext.Provider value={currentUser}>
     <div className="body">
 	<div className="page">
-		<Header/>
+		<Header />
 		<Main
 			onEditAvatar={handleEditAvatarClick}
 			onEditProfile={handleEditProfileClick}
         	onAddPlace={handleAddPlaceClick}
 			onCardClick={handleCardClick}
 		/>
-		<Footer/>
+		<Footer />
+		<EditProfilePopup 
+			isOpen={isEditProfilePopupOpen}
+			onClose={closeAllPopups}
+			onUpdateUser={handleUpdateUser} 
+		/>
 		<PopupWithForm
-		title='Редактировать профиль'
-		name='edit'
-		isOpen={isEditProfilePopupOpen}
-		onClose={closeAllPopups}
-		buttonText='Сохранить'
+			title='Новое место'
+			name='add'
+			isOpen={isAddPlacePopupOpen}
+			onClose={closeAllPopups}
+			buttonText='Создать'
 		>
 				<fieldset className="pop-up__inputs">
-					<input className="pop-up__input pop-up__input_profile_name" id="name-input" name="name" type="text" placeholder="Имя" defaultValue="" minLength="2" maxLength="40" required/>
-						<span className="error" id="name-input-error"></span>
-					<input className="pop-up__input pop-up__input_profile_description" id="description-input" name="about" type="text" placeholder="Род деятельности" defaultValue="" minLength="2" maxLength="200" required/>
-						<span className="error" id="description-input-error"></span>
+					<input
+						className="pop-up__input pop-up__input_name"
+						id="place-input"
+						name="name"
+						type="text"
+						defaultValue=""
+						placeholder="Название"
+						minLength="2"
+						maxLength="30"
+						required
+					/>
+						<span 
+							className="error"
+							id="place-input-error">
+						</span>
+					<input
+						className="pop-up__input pop-up__input_place"
+						id="link-input"
+						name="place"
+						type="url"
+						defaultValue=""
+						placeholder="Ссылка на картинку"
+						required
+					/>
+						<span
+							className="error"
+							id="link-input-error">
+						</span>
 				</fieldset>
 		</PopupWithForm>
 		<PopupWithForm
-		title='Новое место'
-		name='add'
-		isOpen={isAddPlacePopupOpen}
-		onClose={closeAllPopups}
-		buttonText='Создать'
-		>
-				<fieldset className="pop-up__inputs">
-					<input className="pop-up__input pop-up__input_name" id="place-input" name="name" type="text" defaultValue=""
-						placeholder="Название" minLength="2" maxLength="30" required/>
-						<span className="error" id="place-input-error"></span>
-					<input className="pop-up__input pop-up__input_place" id="link-input" name="place" type="url" defaultValue=""
-						placeholder="Ссылка на картинку" required/>
-						<span className="error" id="link-input-error"></span>
-				</fieldset>
-		</PopupWithForm>
-		<PopupWithForm
-		title='Вы уверены?'
-		name='correction'
-		onClose={closeAllPopups}
-		buttonText='Да'
+			title='Вы уверены?'
+			name='correction'
+			onClose={closeAllPopups}
+			buttonText='Да'
 		>
 		</PopupWithForm>
-		<PopupWithForm
-		title='Обновить Аватар'
-		name='avatar'
+		<EditAvatarPopup
 		isOpen={isEditAvatarPopupOpen}
 		onClose={closeAllPopups}
-		buttonText='Сохранить'
-		>
-				<fieldset className="pop-up__inputs">
-					<input className="pop-up__input pop-up__input_avatar" id="avatar-input" name="avatar" type="url" defaultValue="" placeholder="Ссылка на картинку" required/>
-					<span value="error" id="avatar-input-error"></span>
-				</fieldset>
-		</PopupWithForm>
+		onUpdateAvatar={handleUpdateAvatar}
+		/>
 		<ImagePopup
-		onClose={closeAllPopups}
-		card={selectedCard}
+			onClose={closeAllPopups}
+			card={selectedCard}
 		/>
 	</div>
 </div>
